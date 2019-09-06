@@ -1,0 +1,30 @@
+{
+  "name": "webshop",
+  "version": "1.0.0",
+  "description": "Webshop built with MERN stack",
+  "main": "server/server.js",
+  "scripts": {
+    "start": "node server/server.js",
+    "server": "nodemon server/server.js",
+    "client": "npm start --prefix client",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "client-install": "npm install --prefix client",
+    "server-install": "npm install --prefix server",
+    "install-all": "concurrently \"npm run client-install\" \"npm sun server-install\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chas-academy/k03-restful-api-react-ellenstyrelius.git"
+  },
+  "author": "E Styrélius",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/chas-academy/k03-restful-api-react-ellenstyrelius/issues"
+  },
+  "dependencies": {
+    "concurrently": "^4.1.2"
+  },
+  "devDependencies": {
+    "nodemon": "^1.19.2"
+  }
+}
