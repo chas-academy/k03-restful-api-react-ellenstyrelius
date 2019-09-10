@@ -6,10 +6,11 @@
   "scripts": {
     "server": "concurrently \"npm run server --prefix server\" \"npm run lint:watch --prefix server\"",
     "client": "npm start --prefix client",
-    "start": "concurrently \"npm run server\" \"npm run client\"",
+    "start": "concurrently \"npm run server\" \"npm run client\" \"npm run prettier:watch\"",
     "install:all": "npm install --prefix server && npm install --prefix client",
     "lint:all": "npm run lint --prefix server -s && npm run lint --prefix client",
-    "prettier": "prettier \"**/*.js\" \"**/*.css\" \"**/*.html\" \"**/*.json\" \"**/*.md\" --write"
+    "prettier": "prettier \"**/*.js\" \"**/*.css\" \"**/*.html\" \"**/*.json\" \"**/*.md\" --write",
+    "prettier:watch": "watch 'npm run prettier' ."
   },
   "repository": {
     "type": "git",
