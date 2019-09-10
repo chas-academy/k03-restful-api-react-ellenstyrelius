@@ -8,7 +8,8 @@
     "client": "npm start --prefix client",
     "start": "concurrently \"npm run server\" \"npm run client\"",
     "install:all": "npm install --prefix server && npm install --prefix client",
-    "lint:all": "npm run lint --prefix server -s && npm run lint --prefix client"
+    "lint:all": "npm run lint --prefix server -s && npm run lint --prefix client",
+    "prettier": "prettier \"**/*.js\" \"**/*.css\" \"**/*.html\" \"**/*.json\" \"**/*.md\" --write"
   },
   "repository": {
     "type": "git",
@@ -21,5 +22,12 @@
   },
   "dependencies": {
     "concurrently": "^4.1.2"
+  },
+  "devDependencies": {
+    "prettier": "1.18.2",
+    "watch": "^1.0.2"
+  },
+  "prettier": {
+    "singleQuote": true
   }
 }
