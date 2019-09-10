@@ -15,7 +15,13 @@
     "lint": "./node_modules/.bin/eslint ."
   },
   "eslintConfig": {
-    "extends": "react-app"
+    "extends": [
+      "react-app",
+      "plugin:prettier/recommended"
+    ],
+    "rules": {
+      "prettier/prettier": "warn"
+    }
   },
   "browserslist": {
     "production": [
