@@ -4,7 +4,7 @@
   "description": "Webshop built with MERN stack",
   "main": "server/server.js",
   "scripts": {
-    "start": "npm start --prefix server",
+    "start": "node server/server.js",
     "server": "concurrently \"npm run server --prefix server\" \"npm run lint:server:watch\"",
     "client": "npm start --prefix client",
     "start:dev": "concurrently \"npm run server\" \"npm run client\"",
