@@ -12,7 +12,10 @@ const db = require('./config/db').mongoURI;
 
 // connect to mongo
 mongoose
-  .connect(db)
+  .connect(db, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  })
   .then(() => console.log('MongoDB is connected'))
   .catch(err => console.log(err));
 
