@@ -9,7 +9,7 @@
     "client": "npm start --prefix client",
     "start:dev": "concurrently \"npm run server\" \"npm run client\"",
     "install:all": "npm install && npm install --prefix server && npm install --prefix client",
-    "lint:server": "./node_modules/.bin/eslint server/**/*.js",
+    "lint:server": "./node_modules/.bin/eslint './server/**/*.js'",
     "lint:client": "npm run lint --prefix client",
     "lint:all": "npm run lint:server && npm run lint:client",
     "lint:server:watch": "watch 'npm run lint:server' server",
@@ -28,7 +28,7 @@
     "concurrently": "^4.1.2"
   },
   "devDependencies": {
-    "eslint": "^6.3.0",
+    "eslint": "^6.4.0",
     "eslint-config-prettier": "^6.2.0",
     "eslint-plugin-prettier": "^3.1.0",
     "prettier": "1.18.2",
