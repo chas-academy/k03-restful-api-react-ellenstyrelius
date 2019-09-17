@@ -11,8 +11,7 @@ dotenv.config();
 // body-parser middleware
 app.use(bodyParser.json());
 
-// database config
-// const db = require('./config/db').mongoURI;
+// database config, getting uri to MongoDB from .env
 const db = process.env.DB_URI;
 
 // connect to mongo
