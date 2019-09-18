@@ -9,7 +9,15 @@ const Product = require('../../models/Product');
 router.get('/', (req, res) => {
   Product.find()
     .then(products => res.json(products))
-    .catch(err => console.log('Could not get products', err));
+    .catch(res.status(404));
+});
+
+// @route GET api/products/:id
+// get one product
+router.get('/:id', (req, res) => {
+  Product.findById(req.params.id)
+    .then(product => res.json(product))
+    .catch(res.status(404));
 });
 
 // @route POST api/products
