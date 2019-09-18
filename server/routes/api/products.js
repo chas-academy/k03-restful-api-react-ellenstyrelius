@@ -18,10 +18,15 @@ router.post('/', (req, res) => {
   const newProduct = new Product({
     name: req.body.name,
     hexCode: req.body.hexCode,
-    stock: req.body.stock
+    stock: req.body.stock,
+    category: req.body.category,
+    subcategory: req.body.subcategory
   });
 
-  newProduct.save().then(product => res.json(product));
+  newProduct
+    .save()
+    .then(product => res.json(product))
+    .catch(err => console.log(err));
 });
 
 module.exports = router;
