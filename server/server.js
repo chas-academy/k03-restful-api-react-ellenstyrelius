@@ -29,7 +29,10 @@ mongoose
 // use API routes
 app.use('/api/products', productsRoute);
 
-//define which port should be used
+// define which port should be used
 const port = process.env.PORT || 5000;
 
 app.listen(port, () => console.log(`Server started on port ${port}`));
+
+/////////
+console.log('🐐: process.env.NODE_ENV', process.env.NODE_ENV);

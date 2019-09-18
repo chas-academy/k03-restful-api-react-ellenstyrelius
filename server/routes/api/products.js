@@ -29,4 +29,12 @@ router.post('/', (req, res) => {
     .catch(err => console.log(err));
 });
 
+// @route DELETE api/products/:id
+// delete product
+router.delete('/:id', (req, res) => {
+  Product.findById(req.params.id)
+    .then(product => product.remove().then(() => res.json({ deleted: true })))
+    .catch(() => res.status(404).json({ deleted: false }));
+});
+
 module.exports = router;
