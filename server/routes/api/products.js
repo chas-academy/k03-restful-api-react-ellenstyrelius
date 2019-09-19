@@ -37,6 +37,26 @@ router.post('/', (req, res) => {
     .catch(err => console.log(err));
 });
 
+// @route PUT api/products/:id
+// update product with as few or as many properties you want
+router.put('/:id', (req, res) => {
+  Product.findById(req.params.id)
+    .then(product => {
+      for (let prop in product) {
+        for (let reqProp in req.body) {
+          if (prop === reqProp) {
+            product[prop] = req.body[reqProp];
+          }
+        }
+      }
+      product
+        .save()
+        .then(product => res.json(product))
+        .catch(res.status(400));
+    })
+    .catch(res.status(404));
+});
+
 // @route DELETE api/products/:id
 // delete product
 router.delete('/:id', (req, res) => {
