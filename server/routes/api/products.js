@@ -5,9 +5,9 @@ const router = express.Router();
 const Product = require('../../models/Product');
 
 // @route GET api/products
-// get all products
-router.get('/', (req, res) => {
-  Product.find()
+// get all products, sorted alphabetically
+router.get('/', (_req, res) => {
+  Product.find({}, null, { sort: { name: 1 } })
     .then(products => res.json(products))
     .catch(res.status(404));
 });
@@ -17,6 +17,22 @@ router.get('/', (req, res) => {
 router.get('/:id', (req, res) => {
   Product.findById(req.params.id)
     .then(product => res.json(product))
+    .catch(res.status(404));
+});
+
+// @route GET api/products/:category
+// get all products of the same category
+router.get('/category/:category', (req, res) => {
+  Product.find({ category: req.params.category })
+    .then(products => res.json(products))
+    .catch(res.status(404));
+});
+
+// @route GET api/products/:subcategory
+// get all products of the same subcategory
+router.get('/subcategory/:subcategory', (req, res) => {
+  Product.find({ subcategory: req.params.subcategory })
+    .then(products => res.json(products))
     .catch(res.status(404));
 });
 
