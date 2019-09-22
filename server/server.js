@@ -8,6 +8,7 @@ dotenv.config();
 
 // import API routes
 const productsRoute = require('./routes/api/products');
+const usersRoute = require('./routes/api/users');
 
 const app = express();
 
@@ -28,6 +29,7 @@ mongoose
 
 // use API routes
 app.use('/api/products', productsRoute);
+app.use('/api/users', usersRoute);
 
 // define which port should be used
 const port = process.env.PORT || 5000;

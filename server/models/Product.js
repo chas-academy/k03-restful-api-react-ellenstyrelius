@@ -3,7 +3,10 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const ProductSchema = new Schema({
-  name: String,
+  name: {
+    type: String,
+    required: true
+  },
   hexCode: {
     type: String,
     required: true
@@ -35,34 +38,43 @@ const ProductSchema = new Schema({
       'orange-red',
       'purple-red',
       'brown-red',
-      'pale-red',
+      'light-red',
+      'dark-red',
       'green-blue',
       'purple-blue',
       'gray-blue',
-      'pale-blue',
+      'light-blue',
+      'dark-blue',
       'orange-yellow',
       'green-yellow',
       'brown-yellow',
-      'pale-yellow',
+      'light-yellow',
+      'dark-yellow',
       'blue-green',
       'yellow-green',
       'gray-green',
-      'pale-green',
+      'light-green',
+      'dark-green',
       'red-orange',
-      'pale-orange',
+      'light-orange',
+      'dark-orange',
       'red-purple',
       'pink-purple',
       'gray-purple',
-      'pale-purple',
+      'light-purple',
+      'dark-purple',
       'red-pink',
-      'pale-pink',
+      'light-pink',
+      'dark-pink',
       'red-brown',
       'green-brown',
       'yellow-brown',
-      'pale-brown',
+      'light-brown',
+      'dark-brown',
       'gray-brown',
       'blue-gray',
       'brown-gray',
+      'green-gray',
       'dark-gray',
       'light-gray',
       'yellow-white',
@@ -71,6 +83,12 @@ const ProductSchema = new Schema({
       'green-white'
     ]
   }
+});
+
+ProductSchema.index({
+  name: 'text',
+  category: 'text',
+  subcategory: 'text'
 });
 
 module.exports = Product = mongoose.model('product', ProductSchema);

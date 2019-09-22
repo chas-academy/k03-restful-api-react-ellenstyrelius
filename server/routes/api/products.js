@@ -8,32 +8,52 @@ const Product = require('../../models/Product');
 // get all products, sorted alphabetically
 router.get('/', (_req, res) => {
   Product.find({}, null, { sort: { name: 1 } })
-    .then(products => res.json(products))
-    .catch(res.status(404));
+    .then(products => res.status(200).json(products))
+    .catch(err => res.status(404).json(err));
 });
 
 // @route GET api/products/:id
 // get one product
-router.get('/:id', (req, res) => {
+router.get('/product/:id', (req, res) => {
   Product.findById(req.params.id)
-    .then(product => res.json(product))
-    .catch(res.status(404));
+    .then(product => res.status(200).json(product))
+    .catch(err => res.status(404).json(err));
 });
 
-// @route GET api/products/:category
+// @route GET api/products/categories/:category
 // get all products of the same category
-router.get('/category/:category', (req, res) => {
-  Product.find({ category: req.params.category })
-    .then(products => res.json(products))
-    .catch(res.status(404));
+router.get('/categories/:category', (req, res) => {
+  Product.find({ category: req.params.category }, null, { sort: { name: 1 } })
+    .then(products => res.status(200).json(products))
+    .catch(err => res.status(400).json(err));
 });
 
 // @route GET api/products/:subcategory
 // get all products of the same subcategory
-router.get('/subcategory/:subcategory', (req, res) => {
-  Product.find({ subcategory: req.params.subcategory })
-    .then(products => res.json(products))
-    .catch(res.status(404));
+router.get('/categories/:category/:subcategory', (req, res) => {
+  Product.find(
+    {
+      category: req.params.category,
+      subcategory: req.params.subcategory
+    },
+    null,
+    { sort: { name: 1 } }
+  )
+    .then(products => res.status(200).json(products))
+    .catch(err => res.status(400).json(err));
+});
+
+// @route GET api/products/search
+// get products based on query string params
+// search in name, category, subcategory
+router.get('/search', (req, res) => {
+  Product.find(
+    { $text: { $search: req.query.q } },
+    { score: { $meta: 'textScore' } }
+  )
+    .sort({ score: { $meta: 'textScore' } })
+    .then(products => res.status(200).json(products))
+    .catch(err => res.status(404).json(err));
 });
 
 // @route POST api/products
@@ -49,8 +69,8 @@ router.post('/', (req, res) => {
 
   newProduct
     .save()
-    .then(product => res.json(product))
-    .catch(err => console.log(err));
+    .then(product => res.status(200).json(product))
+    .catch(err => res.status(400).json(err));
 });
 
 // @route PUT api/products/:id
@@ -67,17 +87,19 @@ router.put('/:id', (req, res) => {
       }
       product
         .save()
-        .then(product => res.json(product))
-        .catch(res.status(400));
+        .then(product => res.status(200).json(product))
+        .catch(err => res.status(400).json(err));
     })
-    .catch(res.status(404));
+    .catch(err => res.status(404).json(err));
 });
 
 // @route DELETE api/products/:id
 // delete product
 router.delete('/:id', (req, res) => {
   Product.findById(req.params.id)
-    .then(product => product.remove().then(() => res.json({ deleted: true })))
+    .then(product =>
+      product.remove().then(() => res.status(200).json({ deleted: true }))
+    )
     .catch(() => res.status(404).json({ deleted: false }));
 });
 
