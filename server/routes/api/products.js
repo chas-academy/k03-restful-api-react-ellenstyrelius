@@ -14,7 +14,7 @@ router.get('/', (_req, res) => {
 
 // @route GET api/products/:id
 // get one product
-router.get('/:id', (req, res) => {
+router.get('/product/:id', (req, res) => {
   Product.findById(req.params.id)
     .then(product => res.status(200).json(product))
     .catch(err => res.status(404).json(err));
@@ -23,7 +23,7 @@ router.get('/:id', (req, res) => {
 // @route GET api/products/categories/:category
 // get all products of the same category
 router.get('/categories/:category', (req, res) => {
-  Product.find({ category: req.params.category })
+  Product.find({ category: req.params.category }, null, { sort: { name: 1 } })
     .then(products => res.status(200).json(products))
     .catch(err => res.status(400).json(err));
 });
@@ -31,23 +31,30 @@ router.get('/categories/:category', (req, res) => {
 // @route GET api/products/:subcategory
 // get all products of the same subcategory
 router.get('/categories/:category/:subcategory', (req, res) => {
-  Product.find({
-    category: req.params.category,
-    subcategory: req.params.subcategory
-  })
+  Product.find(
+    {
+      category: req.params.category,
+      subcategory: req.params.subcategory
+    },
+    null,
+    { sort: { name: 1 } }
+  )
     .then(products => res.status(200).json(products))
     .catch(err => res.status(400).json(err));
 });
 
-//////////////
-// NOT WORKING, NOT FINISHED (obvi):
 // @route GET api/products/search
-// get products based on query string
-// router.get('/search/search', (req, res) => {
-//   Product.find({ name: req.params.q })
-//     .then(products => res.status(200).json(products))
-//     .catch(err => res.status(404).json(err));
-// });
+// get products based on query string params
+// search in name, category, subcategory
+router.get('/search', (req, res) => {
+  Product.find(
+    { $text: { $search: req.query.q } },
+    { score: { $meta: 'textScore' } }
+  )
+    .sort({ score: { $meta: 'textScore' } })
+    .then(products => res.status(200).json(products))
+    .catch(err => res.status(404).json(err));
+});
 
 // @route POST api/products
 // add product
