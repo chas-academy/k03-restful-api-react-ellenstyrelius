@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const bcrypt = require('bcryptjs');
 
 // import User model
 const User = require('../../models/User');
@@ -7,7 +8,7 @@ const User = require('../../models/User');
 // @route GET api/users
 // get all users, sorted alphabetically
 router.get('/', (_req, res) => {
-  User.find({}, null, { sort: { name: 1 } })
+  User.find({}, null, { sort: { createdAt: -1 } })
     .then(users => res.status(200).json(users))
     .catch(err => res.status(404).json(err));
 });
@@ -22,30 +23,54 @@ router.get('/user/:id', (req, res) => {
 
 // @route GET api/users/search
 // get users based on query string params
-// search name
+// search name and email
 router.get('/search', (req, res) => {
   const regexSearchString = new RegExp(req.query.q, 'i');
-  User.find({ userName: regexSearchString }, null, { sort: { name: 1 } })
+  User.find(
+    { $or: [{ userName: regexSearchString }, { email: regexSearchString }] },
+    null,
+    { sort: { createdAt: -1 } }
+  )
     .then(users => res.status(200).json(users))
     .catch(err => res.status(404).json(err));
 });
 
-///////////////////////
-// this should of course NOT save password in this way!!!!!!
-// just a test ok???!?
 // @route POST api/users
-// add user
+// add user with hashed password after checking for already existing user
 router.post('/', (req, res) => {
-  const newUser = new User({
-    userName: req.body.userName,
-    email: req.body.email,
-    password: req.body.password
-  });
+  const { userName, email, password } = req.body;
 
-  newUser
-    .save()
-    .then(user => res.status(200).json(user))
-    .catch(err => res.status(400).json(err));
+  User.findOne({ email }).then(user => {
+    if (user)
+      return res
+        .status(400)
+        .json({ msg: 'A user with that email address already exists' });
+
+    const newUser = new User({
+      userName,
+      email,
+      password
+    });
+
+    bcrypt.genSalt(10, (err, salt) => {
+      bcrypt.hash(newUser.password, salt, (err, hash) => {
+        if (err) throw err;
+        newUser.password = hash;
+        newUser
+          .save()
+          .then(user =>
+            res.status(200).json({
+              user: {
+                id: user.id,
+                userName: user.userName,
+                email: user.email
+              }
+            })
+          )
+          .catch(err => res.status(400).json(err));
+      });
+    });
+  });
 });
 
 // @route PUT api/users/user/:id
