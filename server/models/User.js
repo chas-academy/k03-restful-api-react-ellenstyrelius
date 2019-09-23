@@ -22,7 +22,8 @@ const UserSchema = new Schema(
         },
         'Password should be at least six characters.'
       ]
-    }
+    },
+    isAdmin: { type: Boolean, default: false }
   },
   { timestamps: true }
 );

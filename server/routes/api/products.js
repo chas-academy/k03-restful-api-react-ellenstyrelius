@@ -75,7 +75,7 @@ router.post('/', (req, res) => {
 
 // @route PUT api/products/:id
 // update product with as few or as many properties you want
-router.put('/:id', (req, res) => {
+router.put('/product/:id', (req, res) => {
   Product.findById(req.params.id)
     .then(product => {
       for (let prop in product) {
@@ -93,9 +93,9 @@ router.put('/:id', (req, res) => {
     .catch(err => res.status(404).json(err));
 });
 
-// @route DELETE api/products/:id
+// @route DELETE api/products/product/:id
 // delete product
-router.delete('/:id', (req, res) => {
+router.delete('/product/:id', (req, res) => {
   Product.findById(req.params.id)
     .then(product =>
       product.remove().then(() => res.status(200).json({ deleted: true }))
