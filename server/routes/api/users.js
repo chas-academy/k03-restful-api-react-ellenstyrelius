@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
 // import User model
 const User = require('../../models/User');
@@ -27,7 +28,7 @@ router.get('/user/:id', (req, res) => {
 router.get('/search', (req, res) => {
   const regexSearchString = new RegExp(req.query.q, 'i');
   User.find(
-    { $or: [{ userName: regexSearchString }, { email: regexSearchString }] },
+    { $or: [{ name: regexSearchString }, { email: regexSearchString }] },
     null,
     { sort: { createdAt: -1 } }
   )
@@ -38,7 +39,7 @@ router.get('/search', (req, res) => {
 // @route POST api/users
 // add user with hashed password after checking for already existing user
 router.post('/', (req, res) => {
-  const { userName, email, password } = req.body;
+  const { name, email, password } = req.body;
 
   User.findOne({ email }).then(user => {
     if (user)
@@ -47,25 +48,35 @@ router.post('/', (req, res) => {
         .json({ msg: 'A user with that email address already exists' });
 
     const newUser = new User({
-      userName,
+      name,
       email,
       password
     });
 
     bcrypt.genSalt(10, (err, salt) => {
+      if (err) res.status(500).json(err);
       bcrypt.hash(newUser.password, salt, (err, hash) => {
-        if (err) throw err;
+        if (err) res.status(500).json(err);
         newUser.password = hash;
         newUser
           .save()
           .then(user =>
-            res.status(200).json({
-              user: {
-                id: user.id,
-                userName: user.userName,
-                email: user.email
+            jwt.sign(
+              { id: user.id },
+              process.env.JWT_SECRET,
+              { expiresIn: 43200 },
+              (err, token) => {
+                if (err) res.status(500).json(err);
+                res.status(200).json({
+                  token,
+                  user: {
+                    id: user.id,
+                    name: user.name,
+                    email: user.email
+                  }
+                });
               }
-            })
+            )
           )
           .catch(err => res.status(400).json(err));
       });
