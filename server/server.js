@@ -1,7 +1,6 @@
 const dotenv = require('dotenv');
 const express = require('express');
 const mongoose = require('mongoose');
-const bodyParser = require('body-parser');
 
 // load dotenv package to immediately read from .env file
 dotenv.config();
@@ -9,7 +8,7 @@ dotenv.config();
 const app = express();
 
 // use body-parser middleware
-app.use(bodyParser.json());
+app.use(express.json());
 
 // database config - get uri with username and password to MongoDB from .env
 const db = process.env.DB_URI;
