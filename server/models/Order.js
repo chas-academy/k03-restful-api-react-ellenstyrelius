@@ -11,7 +11,6 @@ const OrderedProductsSchema = new Schema({
 
 const OrderSchema = new Schema({
   userId: { type: String, required: true },
-  userEmail: { type: String, required: true },
   products: { type: [OrderedProductsSchema], default: undefined },
   payment: { type: String, required: true },
   orderDate: { type: Date, default: Date.now }

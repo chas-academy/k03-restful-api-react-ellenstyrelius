@@ -3,7 +3,10 @@ const jwt = require('jsonwebtoken');
 const authMiddleware = (req, res, next) => {
   const token = req.header('x-auth-token');
 
-  if (!token) res.status(401).json({ msg: 'No token present' });
+  if (!token)
+    res
+      .status(401)
+      .json({ msg: 'No token present - you have to be authenticated' });
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
@@ -12,7 +15,7 @@ const authMiddleware = (req, res, next) => {
   } catch (e) {
     res
       .status(400)
-      .json({ msg: 'Token is not valid' })
+      .json({ msg: 'Token is not valid - you have to be authenticated' })
       .json(e);
   }
 };
