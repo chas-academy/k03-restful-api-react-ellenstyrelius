@@ -17,7 +17,8 @@ const db = process.env.DB_URI;
 mongoose
   .connect(db, {
     useNewUrlParser: true,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
+    useCreateIndex: true
   })
   .then(() => console.log('MongoDB is connected'))
   .catch(err => console.log(err));
@@ -26,6 +27,7 @@ mongoose
 app.use('/api/products', require('./routes/api/products'));
 app.use('/api/users', require('./routes/api/users'));
 app.use('/api/orders', require('./routes/api/orders'));
+app.use('/api/auth', require('./routes/api/auth'));
 
 // define which port should be used, for Heroku deploy and locally
 const port = process.env.PORT || 5000;
