@@ -3,6 +3,9 @@ const router = express.Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
+// import auth middleware
+const auth = require('../../middleware/authMiddleware');
+
 // import User model
 const User = require('../../models/User');
 
@@ -22,7 +25,7 @@ router.post('/', (req, res) => {
         return res.status(400).json({ msg: 'Invalid password' });
 
       jwt.sign(
-        { id: user.id },
+        { id: user.id, isAdmin: user.isAdmin },
         process.env.JWT_SECRET,
         { expiresIn: 43200 },
         (err, token) => {
@@ -32,14 +35,21 @@ router.post('/', (req, res) => {
             user: {
               id: user.id,
               name: user.name,
-              email: user.email,
-              isAdmin: user.isAdmin
+              email: user.email
             }
           });
         }
       );
     });
   });
+});
+
+// @route GET api/auth/user
+// get user data
+router.get('/user', auth, (req, res) => {
+  User.findById(req.user.id)
+    .select('-password')
+    .then(user => res.status(200).json(user));
 });
 
 module.exports = router;
