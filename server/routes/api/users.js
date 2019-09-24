@@ -39,7 +39,7 @@ router.get('/search', (req, res) => {
 // @route POST api/users
 // add user with hashed password after checking for already existing user
 router.post('/', (req, res) => {
-  const { name, email, password } = req.body;
+  const { name, email, password, isAdmin } = req.body;
 
   User.findOne({ email }).then(user => {
     if (user)
@@ -50,7 +50,8 @@ router.post('/', (req, res) => {
     const newUser = new User({
       name,
       email,
-      password
+      password,
+      isAdmin
     });
 
     bcrypt.genSalt(10, (err, salt) => {
