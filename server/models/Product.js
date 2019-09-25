@@ -9,7 +9,8 @@ const ProductSchema = new Schema({
   },
   hexCode: {
     type: String,
-    required: true
+    required: true,
+    unique: true
   },
   stock: {
     type: Number,
