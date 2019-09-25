@@ -2,6 +2,17 @@ const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
 
+// user email validator functions
+const validateEmail = input => {
+  const inputArr = input.split('@');
+  return (
+    input.includes('@') &&
+    inputArr[0].length >= 1 &&
+    inputArr[1].length >= 3 &&
+    inputArr[1].includes('.')
+  );
+};
+
 const UserSchema = new Schema(
   {
     name: {
@@ -11,7 +22,13 @@ const UserSchema = new Schema(
     email: {
       type: String,
       unique: true,
-      required: [true, 'You need to submit an email address']
+      required: [true, 'You need to submit an email address'],
+      validate: [
+        {
+          validator: validateEmail,
+          msg: 'Invalid email address!'
+        }
+      ]
     },
     password: {
       type: String,
