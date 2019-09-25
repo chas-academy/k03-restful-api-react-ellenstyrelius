@@ -3,29 +3,54 @@ const router = express.Router();
 const bcrypt = require('bcryptjs');
 // const jwt = require('jsonwebtoken');
 
+// import auth middleware
+const auth = require('../../middleware/authMiddleware');
+
 // import User model
 const User = require('../../models/User');
 
 // @route GET api/users
+// @access: admin
 // get all users, sorted alphabetically
-router.get('/', (_req, res) => {
+router.get('/', auth, (req, res) => {
+  const isAdmin = req.user.isAdmin;
+
+  if (!isAdmin)
+    res
+      .status(403)
+      .json({ msg: `Permission denied, you need admin status to access this` });
+
   User.find({}, null, { sort: { createdAt: -1 } })
     .then(users => res.status(200).json(users))
     .catch(err => res.status(404).json(err));
 });
 
 // @route GET api/users/:id
+// @access: admin and user with correct id
 // get one user
-router.get('/user/:id', (req, res) => {
+router.get('/user/:id', auth, (req, res) => {
   User.findById(req.params.id)
-    .then(user => res.status(200).json(user))
+    .then(user => {
+      const isAdmin = req.user.isAdmin;
+      const hasUserId = req.user.id === req.params.id;
+
+      if (isAdmin || hasUserId) res.status(200).json(user);
+      return res.status(403).json({ msg: `Permission denied :(` });
+    })
     .catch(err => res.status(404).json(err));
 });
 
 // @route GET api/users/search
-// get users based on query string params
-// search name and email
-router.get('/search', (req, res) => {
+// @access: admin
+// get users by searching for query string params in name and email fields
+router.get('/search', auth, (req, res) => {
+  const isAdmin = req.user.isAdmin;
+
+  if (!isAdmin)
+    res
+      .status(403)
+      .json({ msg: `Permission denied, you need admin status to access this` });
+
   const regexSearchString = new RegExp(req.query.q, 'i');
   User.find(
     { $or: [{ name: regexSearchString }, { email: regexSearchString }] },
@@ -37,6 +62,7 @@ router.get('/search', (req, res) => {
 });
 
 // @route POST api/users
+// @access: public
 // add user with hashed password after checking for already existing user
 router.post('/', (req, res) => {
   const { name, email, password, isAdmin } = req.body;
@@ -76,32 +102,47 @@ router.post('/', (req, res) => {
 });
 
 // @route PUT api/users/user/:id
+// @access: admin and user with correct id
 // update user with as few or as many properties you want
-router.put('/user/:id', (req, res) => {
+router.put('/user/:id', auth, (req, res) => {
   User.findById(req.params.id)
     .then(user => {
-      for (let prop in user) {
-        for (let reqProp in req.body) {
-          if (prop === reqProp) {
-            user[prop] = req.body[reqProp];
+      const isAdmin = req.user.isAdmin;
+      const hasUserId = req.user.id === req.params.id;
+
+      if (isAdmin || hasUserId) {
+        for (let prop in user) {
+          for (let reqProp in req.body) {
+            if (prop === reqProp) {
+              user[prop] = req.body[reqProp];
+            }
           }
         }
+        return user
+          .save()
+          .then(user => res.status(200).json(user))
+          .catch(err => res.status(400).json(err));
       }
-      user
-        .save()
-        .then(user => res.status(200).json(user))
-        .catch(err => res.status(400).json(err));
+      return res.status(403).json({ msg: `Permission denied :(` });
     })
     .catch(err => res.status(404).json(err));
 });
 
 // @route DELETE api/users/user/:id
+// @access: admin and user with correct id
 // delete user
-router.delete('/user/:id', (req, res) => {
+router.delete('/user/:id', auth, (req, res) => {
   User.findById(req.params.id)
-    .then(user =>
-      user.remove().then(() => res.status(200).json({ deleted: true }))
-    )
+    .then(user => {
+      const isAdmin = req.user.isAdmin;
+      const hasUserId = req.user.id === req.params.id;
+
+      if (isAdmin || hasUserId)
+        return user
+          .remove()
+          .then(() => res.status(200).json({ deleted: true }));
+      return res.status(403).json({ msg: `Permission denied :(` });
+    })
     .catch(() => res.status(404).json({ deleted: false }));
 });
 

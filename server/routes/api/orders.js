@@ -10,12 +10,15 @@ const Order = require('../../models/Order');
 // ALL ROUTES ARE PROTECTED ROUTES
 
 // @route GET api/orders
+// @access: admin
 // get all orders, sorted alphabetically
-// access: admin
 router.get('/', auth, (req, res) => {
   const isAdmin = req.user.isAdmin;
 
-  if (!isAdmin) res.status(403).json({ msg: `Permission denied :(` });
+  if (!isAdmin)
+    res
+      .status(403)
+      .json({ msg: `Permission denied, you need admin status to access this` });
 
   Order.find({}, null, { sort: { orderDate: -1 } })
     .then(orders => res.status(200).json(orders))
@@ -23,38 +26,38 @@ router.get('/', auth, (req, res) => {
 });
 
 // @route GET api/orders/:id
+// @access: admin and user who placed the order
 // get a specific order
-// access: admin and user who placed the order
 router.get('/order/:id', auth, (req, res) => {
   Order.findById(req.params.id)
     .then(order => {
       const isAdmin = req.user.isAdmin;
-      const hasSameUserId = req.user.id === order.userId;
+      const hasUserId = req.user.id === order.userId;
 
-      if (isAdmin || hasSameUserId) res.status(200).json(order);
+      if (isAdmin || hasUserId) res.status(200).json(order);
       return res.status(403).json({ msg: `Permission denied :(` });
     })
     .catch(err => res.status(404).json(err));
 });
 
 // @route GET api/orders/user/:id
+// @access: admin and user who placed the order(s)
 // get order(s) for specific user
-// access: admin and user who placed the order(s)
 router.get('/user/:userId', auth, (req, res) => {
   Order.find({ userId: req.params.userId }, null, { sort: { orderDate: -1 } })
     .then(orders => {
       const isAdmin = req.user.isAdmin;
-      const hasSameUserId = req.user.id === req.params.userId;
+      const hasUserId = req.user.id === req.params.userId;
 
-      if (isAdmin || hasSameUserId) res.status(200).json(orders);
+      if (isAdmin || hasUserId) res.status(200).json(orders);
       return res.status(403).json({ msg: `Permission denied :(` });
     })
     .catch(err => res.status(404).json(err));
 });
 
 // @route POST api/orders
+// @access: all authenticated users
 // add order
-// access: all users
 router.post('/', auth, (req, res) => {
   let orderedProducts = [];
   req.body.products.map(order => orderedProducts.push(order));
@@ -72,8 +75,8 @@ router.post('/', auth, (req, res) => {
 });
 
 // @route DELETE api/orders/order/:id
+// @access: admin
 // delete order
-// access: admin
 router.delete('/order/:id', auth, (req, res) => {
   const isAdmin = req.user.isAdmin;
 
