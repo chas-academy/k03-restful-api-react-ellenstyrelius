@@ -68,24 +68,32 @@ router.get('/search', (req, res) => {
 // add product
 router.post('/', auth, (req, res) => {
   const isAdmin = req.user.isAdmin;
+  const { name, hexCode, stock, category, subcategory } = req.body;
 
   if (!isAdmin)
     res
       .status(403)
       .json({ msg: `Permission denied, you need admin status to access this` });
 
-  const newProduct = new Product({
-    name: req.body.name,
-    hexCode: req.body.hexCode,
-    stock: req.body.stock,
-    category: req.body.category,
-    subcategory: req.body.subcategory
-  });
+  Product.findOne({ name }).then(product => {
+    if (product)
+      return res
+        .status(400)
+        .json({ msg: 'A product with that name already exists' });
 
-  newProduct
-    .save()
-    .then(product => res.status(200).json(product))
-    .catch(err => res.status(400).json(err));
+    const newProduct = new Product({
+      name,
+      hexCode,
+      stock,
+      category,
+      subcategory
+    });
+
+    newProduct
+      .save()
+      .then(product => res.status(200).json(product))
+      .catch(err => res.status(400).json(err));
+  });
 });
 
 // @route PUT api/products/:id
