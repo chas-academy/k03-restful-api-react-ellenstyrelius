@@ -1,10 +1,14 @@
 const express = require('express');
 const router = express.Router();
 
+// import auth middleware
+const auth = require('../../middleware/authMiddleware');
+
 // import Product model
 const Product = require('../../models/Product');
 
 // @route GET api/products
+// @access: public
 // get all products, sorted alphabetically
 router.get('/', (_req, res) => {
   Product.find({}, null, { sort: { name: 1 } })
@@ -13,6 +17,7 @@ router.get('/', (_req, res) => {
 });
 
 // @route GET api/products/:id
+// @access: public
 // get one product
 router.get('/product/:id', (req, res) => {
   Product.findById(req.params.id)
@@ -21,6 +26,7 @@ router.get('/product/:id', (req, res) => {
 });
 
 // @route GET api/products/categories/:category
+// @access: public
 // get all products of the same category
 router.get('/categories/:category', (req, res) => {
   Product.find({ category: req.params.category }, null, { sort: { name: 1 } })
@@ -29,6 +35,7 @@ router.get('/categories/:category', (req, res) => {
 });
 
 // @route GET api/products/:subcategory
+// @access: public
 // get all products of the same subcategory
 router.get('/categories/:category/:subcategory', (req, res) => {
   Product.find(
@@ -44,8 +51,8 @@ router.get('/categories/:category/:subcategory', (req, res) => {
 });
 
 // @route GET api/products/search
-// get products based on query string params
-// search in name, category, subcategory
+// @access: public
+// get products by searching for query string params in name, category, subcategory
 router.get('/search', (req, res) => {
   Product.find(
     { $text: { $search: req.query.q } },
@@ -57,8 +64,16 @@ router.get('/search', (req, res) => {
 });
 
 // @route POST api/products
+// @access: admin
 // add product
-router.post('/', (req, res) => {
+router.post('/', auth, (req, res) => {
+  const isAdmin = req.user.isAdmin;
+
+  if (!isAdmin)
+    res
+      .status(403)
+      .json({ msg: `Permission denied, you need admin status to access this` });
+
   const newProduct = new Product({
     name: req.body.name,
     hexCode: req.body.hexCode,
@@ -74,8 +89,16 @@ router.post('/', (req, res) => {
 });
 
 // @route PUT api/products/:id
+// @access: admin
 // update product with as few or as many properties you want
-router.put('/product/:id', (req, res) => {
+router.put('/product/:id', auth, (req, res) => {
+  const isAdmin = req.user.isAdmin;
+
+  if (!isAdmin)
+    res
+      .status(403)
+      .json({ msg: `Permission denied, you need admin status to access this` });
+
   Product.findById(req.params.id)
     .then(product => {
       for (let prop in product) {
@@ -94,8 +117,16 @@ router.put('/product/:id', (req, res) => {
 });
 
 // @route DELETE api/products/product/:id
+// @access: admin
 // delete product
-router.delete('/product/:id', (req, res) => {
+router.delete('/product/:id', auth, (req, res) => {
+  const isAdmin = req.user.isAdmin;
+
+  if (!isAdmin)
+    res
+      .status(403)
+      .json({ msg: `Permission denied, you need admin status to access this` });
+
   Product.findById(req.params.id)
     .then(product =>
       product.remove().then(() => res.status(200).json({ deleted: true }))
