@@ -23,6 +23,25 @@ mongoose
   .then(() => console.log('MongoDB is connected'))
   .catch(err => console.log(err));
 
+// enable Cross Origin Resource Sharing
+app.use((req, res, next) => {
+  const allowedOrigins = [
+    'http://localhost:3000',
+    'https://tinglingtints.netlify.com'
+  ];
+  const reqOrigin = req.headers.origin;
+  allowedOrigins.map(origin => {
+    if (reqOrigin === origin) {
+      res.header('Access-Control-Allow-Origin', reqOrigin);
+    }
+  });
+  res.header(
+    'Access-Control-Allow-Headers',
+    'Origin, X-Requested-With, Content-Type, Accept'
+  );
+  next();
+});
+
 // import and use API routes
 app.use('/api/products', require('./routes/api/products'));
 app.use('/api/users', require('./routes/api/users'));

@@ -4,3 +4,13 @@
   box-sizing: border-box;
   font-family: 'Roboto', 'Helvetica Neue', Helvetica, sans-serif;
 }
+
+#root {
+  background: #fffef9;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  font-weight: 200;
+}
