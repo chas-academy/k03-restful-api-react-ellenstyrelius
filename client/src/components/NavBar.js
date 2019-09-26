@@ -9,7 +9,7 @@ import size from '../utils/styling/size';
 import fontSize from '../utils/styling/fontSize';
 
 const { cream, oldPeachLight, gray3, offBlack } = color;
-const { small, medium, large } = size;
+const { small, medium } = size;
 
 const Nav = styled.nav`
   background: ${cream};

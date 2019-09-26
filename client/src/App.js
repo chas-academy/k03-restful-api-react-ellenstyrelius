@@ -1,15 +1,30 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 import NavBar from './components/NavBar';
-
-import color from './utils/styling/color';
-import { ReactComponent as Splash } from './utils/img/splash.svg';
+import Loader from './components/Loader';
+import apiUrl from './utils/apiUrl';
 
 function App() {
+  const [isLoading, setIsLoading] = useState(true);
+
+  const fetchProducts = () => {
+    console.log(apiUrl);
+    fetch(`${apiUrl}/products`)
+      .then(res => res.json())
+      .then(data => {
+        console.log(data);
+        setIsLoading(false);
+      });
+  };
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
   return (
     <>
       <NavBar />
-      <Splash height={160} fill={color.oldPeach} />
+      {isLoading && <Loader />}
     </>
   );
 }
