@@ -25,6 +25,8 @@ function App() {
     <>
       <NavBar />
       {isLoading && <Loader />}
+      <p>coming soon: Tingling Tints webshop</p>
+      <div></div>
     </>
   );
 }
