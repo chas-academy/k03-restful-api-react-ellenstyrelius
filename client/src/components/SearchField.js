@@ -11,15 +11,15 @@ const { min, small, large } = size;
 
 const Container = styled.div`
   background: white;
-  margin-right: ${large};
+  margin-right: ${large}px;
   border: 1px solid ${gray3};
   display: flex;
   align-items: center;
 `;
 
 const Input = styled.input`
-  width: calc(6 * ${large});
-  margin: ${min} ${small};
+  width: calc(6 * ${large}px);
+  margin: ${min}px ${small}px;
   color: ${offBlack};
   font-size: ${fontSize.fontSmall};
   border: none;
