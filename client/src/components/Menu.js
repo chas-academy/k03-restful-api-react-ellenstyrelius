@@ -24,7 +24,7 @@ const menuItems = [
 
 const Container = styled.ul`
   background: white;
-  opacity: 0.8;
+  opacity: 0.9;
   width: 100%;
   display: flex;
   align-items: center;
