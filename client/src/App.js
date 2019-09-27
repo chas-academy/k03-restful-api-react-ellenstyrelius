@@ -3,8 +3,7 @@ import styled from 'styled-components';
 
 import color from './utils/styling/color';
 import NavBar from './components/NavBar';
-import Loader from './components/Loader';
-import apiUrl from './utils/apiUrl';
+import Products from './components/Products';
 
 const AppContainer = styled.div`
   background: ${color.offWhite};
@@ -18,26 +17,10 @@ const AppContainer = styled.div`
 `;
 
 function App() {
-  const [isLoading, setIsLoading] = useState(true);
-
-  const fetchProducts = () => {
-    console.log(apiUrl);
-    fetch(`${apiUrl}/products`)
-      .then(res => res.json())
-      .then(data => {
-        console.log(data);
-        setIsLoading(false);
-      });
-  };
-
-  useEffect(() => {
-    fetchProducts();
-  }, []);
-
   return (
     <AppContainer>
       <NavBar />
-      {isLoading && <Loader />}
+      <Products />
     </AppContainer>
   );
 }

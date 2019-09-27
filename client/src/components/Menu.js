@@ -5,7 +5,8 @@ import color from '../utils/styling/color';
 import size from '../utils/styling/size';
 import fontSize from '../utils/styling/fontSize';
 
-const { offBlack, lavender } = color;
+const { lavender } = color;
+const { small, medium } = size;
 
 const menuItems = [
   'all tints',
@@ -23,6 +24,7 @@ const menuItems = [
 
 const Container = styled.ul`
   background: white;
+  opacity: 0.8;
   width: 100%;
   display: flex;
   align-items: center;
@@ -34,8 +36,8 @@ const Container = styled.ul`
 `;
 
 const MenuItem = styled.li`
-  color: ${offBlack};
-  margin: ${size.small}px ${size.large}px;
+  color: black;
+  margin: ${small}px ${medium}px;
   padding: 2px;
   font-size: ${fontSize.fontSmall};
   text-transform: uppercase;
