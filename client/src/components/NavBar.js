@@ -1,6 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
+import heightOfNav from '../utils/heightOfNav';
 import { ReactComponent as LogoName } from '../utils/img/logoName.svg';
 import SearchField from './SearchField';
 import { ReactComponent as Cart } from '../utils/img/cart.svg';
@@ -10,9 +12,7 @@ import size from '../utils/styling/size';
 import fontSize from '../utils/styling/fontSize';
 
 const { cream, oldPeachLight, gray3, offBlack } = color;
-const { small, medium, large } = size;
-
-export const heightOfNav = large + small;
+const { medium } = size;
 
 const Nav = styled.nav`
   background: ${cream};
@@ -26,12 +26,6 @@ const Nav = styled.nav`
   position: fixed;
   top: 0;
   z-index: 10;
-`;
-
-const HomeLink = styled.a`
-  :hover {
-    cursor: pointer;
-  }
 `;
 
 const RightSideContainer = styled.div`
@@ -53,9 +47,12 @@ const LogInContainer = styled.div`
   width: 68px;
   display: flex;
   justify-content: flex-end;
+  > a {
+    text-decoration: none;
+  }
 `;
 
-const LogIn = styled.a`
+const LogIn = styled.p`
   font-size: ${fontSize.fontMedium};
   text-transform: uppercase;
   color: ${offBlack};
@@ -69,14 +66,22 @@ function NavBar({ isLoggedIn }) {
   return (
     <>
       <Nav>
-        <HomeLink>
+        <Link to="/">
           <LogoName />
-        </HomeLink>
+        </Link>
         <RightSideContainer>
           <SearchField />
           <CartIcon />
           <LogInContainer>
-            <LogIn>{isLoggedIn ? 'log out' : 'log in'}</LogIn>
+            {!isLoggedIn ? (
+              <Link to="/login">
+                <LogIn>log in</LogIn>
+              </Link>
+            ) : (
+              <Link to="/">
+                <LogIn>log out</LogIn>
+              </Link>
+            )}
           </LogInContainer>
         </RightSideContainer>
       </Nav>

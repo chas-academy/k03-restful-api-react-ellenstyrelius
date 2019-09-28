@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 import color from './utils/styling/color';
 import NavBar from './components/NavBar';
 import Home from './components/Home';
+import Login from './components/Login';
 import Products from './components/Products';
 
 const AppContainer = styled.div`
@@ -22,9 +24,13 @@ function App() {
 
   return (
     <AppContainer>
-      <NavBar {...{ isLoggedIn }} />
-      <Home />
-      <Products />
+      <Router>
+        <NavBar {...{ isLoggedIn }} />
+
+        <Route exact path="/" component={Home} />
+        <Route path="/login" component={Login} />
+        <Route path="/products" component={Products} />
+      </Router>
     </AppContainer>
   );
 }
