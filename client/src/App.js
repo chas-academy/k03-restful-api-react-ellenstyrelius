@@ -2,11 +2,12 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 
-import color from './utils/styling/color';
 import NavBar from './components/NavBar';
 import Home from './components/Home';
 import Login from './components/Login';
 import Products from './components/Products';
+import Category from './components/Category';
+import color from './utils/styling/color';
 
 const AppContainer = styled.div`
   background: ${color.offWhite};
@@ -29,7 +30,17 @@ function App() {
 
         <Route exact path="/" component={Home} />
         <Route path="/login" component={Login} />
-        <Route path="/products" component={Products} />
+        <Route path="/products/all-tints" component={Products} />
+        <Route path="/products/red" component={Category} />
+        <Route path="/products/blue" component={Category} />
+        <Route path="/products/yellow" component={Category} />
+        <Route path="/products/green" component={Category} />
+        <Route path="/products/purple" component={Category} />
+        <Route path="/products/orange" component={Category} />
+        <Route path="/products/pink" component={Category} />
+        <Route path="/products/brown" component={Category} />
+        <Route path="/products/gray" component={Category} />
+        <Route path="/products/white" component={Category} />
       </Router>
     </AppContainer>
   );
