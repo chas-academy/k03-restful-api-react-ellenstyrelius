@@ -40,14 +40,19 @@ const RightSideContainer = styled.div`
 `;
 
 const CartIcon = styled(Cart)`
-  height: calc(3 * ${small}px);
-  width: calc(3 * ${small}px);
+  width: 22px;
   margin: 0 ${medium}px 2px 0;
   :hover {
     cursor: pointer;
     fill: ${oldPeachLight};
     transition: 0.3s;
   }
+`;
+
+const LogInContainer = styled.div`
+  width: 68px;
+  display: flex;
+  justify-content: flex-end;
 `;
 
 const LogIn = styled.a`
@@ -60,7 +65,7 @@ const LogIn = styled.a`
   }
 `;
 
-function NavBar() {
+function NavBar({ isLoggedIn }) {
   return (
     <>
       <Nav>
@@ -70,7 +75,9 @@ function NavBar() {
         <RightSideContainer>
           <SearchField />
           <CartIcon />
-          <LogIn>log in</LogIn>
+          <LogInContainer>
+            <LogIn>{isLoggedIn ? 'log out' : 'log in'}</LogIn>
+          </LogInContainer>
         </RightSideContainer>
       </Nav>
       <Menu {...{ heightOfNav }} />

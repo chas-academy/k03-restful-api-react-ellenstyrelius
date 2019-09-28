@@ -18,9 +18,11 @@ const AppContainer = styled.div`
 `;
 
 function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
   return (
     <AppContainer>
-      <NavBar />
+      <NavBar {...{ isLoggedIn }} />
       <Home />
       <Products />
     </AppContainer>
