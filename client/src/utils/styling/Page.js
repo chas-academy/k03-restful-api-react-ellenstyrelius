@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { heightOfNav } from '../../components/NavBar';
+import heightOfNav from '../heightOfNav';
 
 const Page = styled.section`
   width: 96%;
