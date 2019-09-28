@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 
 import color from './utils/styling/color';
 import NavBar from './components/NavBar';
+import Home from './components/Home';
 import Products from './components/Products';
 
 const AppContainer = styled.div`
@@ -20,6 +21,7 @@ function App() {
   return (
     <AppContainer>
       <NavBar />
+      <Home />
       <Products />
     </AppContainer>
   );
