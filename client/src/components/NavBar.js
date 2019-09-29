@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
 import heightOfNav from '../utils/heightOfNav';
-import { ReactComponent as LogoName } from '../utils/img/logoName.svg';
 import SearchField from './SearchField';
 import { ReactComponent as Cart } from '../utils/img/cart.svg';
 import Menu from './Menu';
@@ -11,7 +10,7 @@ import color from '../utils/styling/color';
 import size from '../utils/styling/size';
 import fontSize from '../utils/styling/fontSize';
 
-const { cream, oldPeachLight, gray3, offBlack } = color;
+const { cream, oldPeachLight, gray3, gray4, offBlack } = color;
 const { medium } = size;
 
 const Nav = styled.nav`
@@ -26,6 +25,12 @@ const Nav = styled.nav`
   position: fixed;
   top: 0;
   z-index: 10;
+`;
+
+const Header = styled.h1`
+  color: ${gray4};
+  font-family: 'Courgette';
+  font-size: 20px;
 `;
 
 const RightSideContainer = styled.div`
@@ -66,8 +71,8 @@ function NavBar({ isLoggedIn }) {
   return (
     <>
       <Nav>
-        <Link to="/">
-          <LogoName />
+        <Link to="/" style={{ textDecoration: 'none' }}>
+          <Header>Tingling Tints</Header>
         </Link>
         <RightSideContainer>
           <SearchField />
