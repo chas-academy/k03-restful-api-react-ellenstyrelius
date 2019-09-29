@@ -12,10 +12,9 @@ import color from '../utils/styling/color';
 import { FlexRowCenter } from '../utils/styling/flexContainers';
 import { Header } from '../utils/styling/headers';
 
-const { gray4, offBlack } = color;
+const { offBlack } = color;
 const { large } = size;
 
-// styled components
 const Container = styled(FlexRowCenter)``;
 
 function Products() {
@@ -24,7 +23,14 @@ function Products() {
   const [productsData, setProductsData] = useState(null);
 
   const fetchProducts = () => {
-    fetch(`${apiUrl}/products`)
+    const urlArr = window.location.href.split('/');
+    const fetchParam = urlArr[urlArr.length - 1];
+    let fetchUrl;
+    fetchParam === 'all-tints'
+      ? (fetchUrl = `${apiUrl}/products`)
+      : (fetchUrl = `${apiUrl}/products/categories/${fetchParam}`);
+
+    fetch(fetchUrl)
       .then(res => res.json())
       .then(data => {
         setIsLoading(false);

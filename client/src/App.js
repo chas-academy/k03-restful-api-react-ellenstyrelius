@@ -7,7 +7,6 @@ import Footer from './components/Footer';
 import Home from './components/Home';
 import Login from './components/Login';
 import Products from './components/Products';
-import Category from './components/Category';
 import color from './utils/styling/color';
 
 const AppContainer = styled.div`
@@ -32,16 +31,16 @@ function App() {
         <Route exact path="/" component={Home} />
         <Route path="/login" component={Login} />
         <Route path="/products/all-tints" component={Products} />
-        <Route path="/products/red" component={Category} />
-        <Route path="/products/blue" component={Category} />
-        <Route path="/products/yellow" component={Category} />
-        <Route path="/products/green" component={Category} />
-        <Route path="/products/purple" component={Category} />
-        <Route path="/products/orange" component={Category} />
-        <Route path="/products/pink" component={Category} />
-        <Route path="/products/brown" component={Category} />
-        <Route path="/products/gray" component={Category} />
-        <Route path="/products/white" component={Category} />
+        <Route path="/products/red" component={Products} />
+        <Route path="/products/blue" component={Products} />
+        <Route path="/products/yellow" component={Products} />
+        <Route path="/products/green" component={Products} />
+        <Route path="/products/purple" component={Products} />
+        <Route path="/products/orange" component={Products} />
+        <Route path="/products/pink" component={Products} />
+        <Route path="/products/brown" component={Products} />
+        <Route path="/products/gray" component={Products} />
+        <Route path="/products/white" component={Products} />
       </Router>
 
       <Footer />
