@@ -3,6 +3,7 @@ import styled from 'styled-components';
 
 import apiUrl from '../utils/apiUrl';
 import Loader from './Loader';
+import Error from './Error';
 import { ReactComponent as Splash } from '../utils/img/splash.svg';
 import Page from '../utils/styling/Page';
 import size from '../utils/styling/size';
@@ -19,7 +20,6 @@ function Products() {
   const [productsData, setProductsData] = useState(null);
 
   const fetchProducts = () => {
-    console.log(apiUrl);
     fetch(`${apiUrl}/products`)
       .then(res => res.json())
       .then(data => {
@@ -41,7 +41,7 @@ function Products() {
   return (
     <Page>
       {isLoading && <Loader />}
-      {hasError && <p>Oh no, something bad happened</p>}
+      {hasError && <Error />}
       {!isLoading && !hasError && productsData && (
         <Container>
           {productsData.map((product, index) => {
