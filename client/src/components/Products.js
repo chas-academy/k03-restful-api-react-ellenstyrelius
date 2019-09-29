@@ -6,13 +6,17 @@ import Loader from './Loader';
 import Error from './Error';
 import { ReactComponent as Splash } from '../utils/img/splash.svg';
 import Page from '../utils/styling/Page';
+import ProductContainer from '../utils/styling/ProductContainer';
 import size from '../utils/styling/size';
 import color from '../utils/styling/color';
+import { FlexRowCenter } from '../utils/styling/flexContainers';
+import { Header } from '../utils/styling/headers';
 
-const { gray4 } = color;
+const { gray4, offBlack } = color;
+const { large } = size;
 
 // styled components
-const Container = styled.div``;
+const Container = styled(FlexRowCenter)``;
 
 function Products() {
   const [isLoading, setIsLoading] = useState(true);
@@ -43,22 +47,25 @@ function Products() {
       {isLoading && <Loader />}
       {hasError && <Error />}
       {!isLoading && !hasError && productsData && (
-        <Container>
-          {productsData.map((product, index) => {
-            const { hexCode, name, category } = product;
-            return (
-              // all this should be wrapped in a router link, routing to Product component that doesn't exist yet
-              <div key={index}>
-                <Splash
-                  width={size.large * 4}
-                  fill={hexCode}
-                  stroke={category === 'white' ? gray4 : 'none'}
-                />{' '}
-                <p>{name}</p>
-              </div>
-            );
-          })}
-        </Container>
+        <>
+          <Header>all tints</Header>
+          <Container>
+            {productsData.map((product, index) => {
+              const { hexCode, name, category } = product;
+              return (
+                // all this should be wrapped in a router link, routing to Product component that doesn't exist yet
+                <ProductContainer key={index}>
+                  <Splash
+                    width={large * 4}
+                    fill={hexCode}
+                    stroke={category === 'white' ? offBlack : 'none'}
+                  />{' '}
+                  <p>{name}</p>
+                </ProductContainer>
+              );
+            })}
+          </Container>
+        </>
       )}
     </Page>
   );
