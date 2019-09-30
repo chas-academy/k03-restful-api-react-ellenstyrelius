@@ -12,16 +12,21 @@ import size from '../utils/styling/size';
 import color from '../utils/styling/color';
 import { FlexRowCenter } from '../utils/styling/flexContainers';
 
-const { offBlack } = color;
 const { large } = size;
+const { offBlack } = color;
 
-function Products() {
+function ProductsSubCategories() {
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
   const [productsData, setProductsData] = useState(null);
 
   const fetchProducts = () => {
-    fetch(`${apiUrl}/products`)
+    const urlParamsArr = window.location.href.split('products/')[1].split('/');
+    const category = urlParamsArr[0];
+    const subcategory = urlParamsArr[1];
+    const fetchUrl = `${apiUrl}/products/categories/${category}/${subcategory}`;
+
+    fetch(fetchUrl)
       .then(res => res.json())
       .then(data => {
         setIsLoading(false);
@@ -46,7 +51,6 @@ function Products() {
         <>
           <CategoryHeader />
           <SubMenu />
-
           <FlexRowCenter>
             {productsData.map((product, index) => {
               const { hexCode, name, category } = product;
@@ -69,4 +73,4 @@ function Products() {
   );
 }
 
-export default Products;
+export default ProductsSubCategories;
