@@ -12,7 +12,7 @@ export const categories = [
   'white'
 ];
 
-export const subCategories = [
+export const subcategories = [
   'orange-red',
   'purple-red',
   'brown-red',
