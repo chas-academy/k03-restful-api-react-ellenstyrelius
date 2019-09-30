@@ -7,6 +7,7 @@ import Footer from './components/Footer';
 import Home from './components/Home';
 import Login from './components/Login';
 import Products from './components/Products';
+import { categories, subCategories } from './utils/tintsCategories';
 import color from './utils/styling/color';
 
 const AppContainer = styled.div`
@@ -31,16 +32,15 @@ function App() {
         <Route exact path="/" component={Home} />
         <Route path="/login" component={Login} />
         <Route path="/products/all-tints" component={Products} />
-        <Route path="/products/red" component={Products} />
-        <Route path="/products/blue" component={Products} />
-        <Route path="/products/yellow" component={Products} />
-        <Route path="/products/green" component={Products} />
-        <Route path="/products/purple" component={Products} />
-        <Route path="/products/orange" component={Products} />
-        <Route path="/products/pink" component={Products} />
-        <Route path="/products/brown" component={Products} />
-        <Route path="/products/gray" component={Products} />
-        <Route path="/products/white" component={Products} />
+        {categories.map((category, index) => {
+          const categoryPath = `/products/${category}`;
+          return <Route key={index} path={categoryPath} component={Products} />;
+        })}
+        {subCategories.map((subCategory, index) => {
+          const category = subCategory.split('-')[1];
+          const categoryPath = `/products/${category}/${subCategory}`;
+          return <Route key={index} path={categoryPath} component={Products} />;
+        })}
       </Router>
 
       <Footer />

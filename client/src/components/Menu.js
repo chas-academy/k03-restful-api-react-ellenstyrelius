@@ -2,26 +2,13 @@ import React from 'react';
 import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
 
+import { categories } from '../utils/tintsCategories';
 import color from '../utils/styling/color';
 import size from '../utils/styling/size';
 import fontSize from '../utils/styling/fontSize';
 
 const { lavender, offBlack } = color;
 const { small, medium } = size;
-
-const menuItems = [
-  'all tints',
-  'red',
-  'blue',
-  'yellow',
-  'green',
-  'purple',
-  'orange',
-  'pink',
-  'brown',
-  'gray',
-  'white'
-];
 
 const Container = styled.ul`
   background: white;
@@ -45,8 +32,7 @@ const MenuItem = styled.li`
     color: black;
     text-decoration: none;
     :hover {
-      background: ${lavender};
-      transition: 0.3s;
+      text-decoration: underline solid ${lavender};
     }
   }
 `;
@@ -57,7 +43,7 @@ function Menu({ heightOfNav }) {
   return (
     <>
       <Container style={{ top: `${heightOfNav}px` }}>
-        {menuItems.map((item, index) => {
+        {categories.map((item, index) => {
           const categoryPath = `${basePath}/${item}`;
           const activeLinkStyle = {
             textDecoration: `underline solid ${offBlack}`
