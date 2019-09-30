@@ -1,42 +1,46 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
-import { ReactComponent as LogoName } from '../utils/img/logoName.svg';
+import heightOfNav from '../utils/heightOfNav';
 import SearchField from './SearchField';
 import { ReactComponent as Cart } from '../utils/img/cart.svg';
+import Menu from './Menu';
 import color from '../utils/styling/color';
 import size from '../utils/styling/size';
 import fontSize from '../utils/styling/fontSize';
 
-const { cream, oldPeachLight, gray3, offBlack } = color;
-const { small, medium } = size;
+const { cream, oldPeachLight, gray3, gray4, offBlack } = color;
+const { medium } = size;
 
 const Nav = styled.nav`
   background: ${cream};
   width: 100%;
-  padding: ${small} ${medium};
+  height: ${heightOfNav}px;
+  padding: 0 ${medium}px;
   box-shadow: 0 1px 2px ${gray3};
   display: flex;
   align-items: center;
   justify-content: space-between;
   position: fixed;
   top: 0;
+  z-index: 10;
 `;
 
-const HomeLink = styled.a`
-  :hover {
-    cursor: pointer;
-  }
+const Header = styled.h1`
+  color: ${gray4};
+  font-family: 'Courgette';
+  font-size: 20px;
 `;
 
-const Container = styled.div`
+const RightSideContainer = styled.div`
   display: flex;
   align-items: center;
 `;
 
 const CartIcon = styled(Cart)`
-  height: calc(3 * ${small});
-  margin: 0 ${medium} ${small} 0;
+  width: 22px;
+  margin: 0 ${medium}px 2px 0;
   :hover {
     cursor: pointer;
     fill: ${oldPeachLight};
@@ -44,7 +48,16 @@ const CartIcon = styled(Cart)`
   }
 `;
 
-const LogIn = styled.a`
+const LogInContainer = styled.div`
+  width: 68px;
+  display: flex;
+  justify-content: flex-end;
+  > a {
+    text-decoration: none;
+  }
+`;
+
+const LogIn = styled.p`
   font-size: ${fontSize.fontMedium};
   text-transform: uppercase;
   color: ${offBlack};
@@ -54,18 +67,31 @@ const LogIn = styled.a`
   }
 `;
 
-function NavBar() {
+function NavBar({ isLoggedIn }) {
   return (
-    <Nav>
-      <HomeLink>
-        <LogoName />
-      </HomeLink>
-      <Container>
-        <SearchField />
-        <CartIcon />
-        <LogIn>log in</LogIn>
-      </Container>
-    </Nav>
+    <>
+      <Nav>
+        <Link to="/" style={{ textDecoration: 'none' }}>
+          <Header>Tingling Tints</Header>
+        </Link>
+        <RightSideContainer>
+          <SearchField />
+          <CartIcon />
+          <LogInContainer>
+            {!isLoggedIn ? (
+              <Link to="/login">
+                <LogIn>log in</LogIn>
+              </Link>
+            ) : (
+              <Link to="/">
+                <LogIn>log out</LogIn>
+              </Link>
+            )}
+          </LogInContainer>
+        </RightSideContainer>
+      </Nav>
+      <Menu {...{ heightOfNav }} />
+    </>
   );
 }
 

@@ -81,7 +81,7 @@ const ProductSchema = new Schema({
       'yellow-white',
       'pink-white',
       'gray-white',
-      'green-white'
+      'blue-white'
     ]
   }
 });

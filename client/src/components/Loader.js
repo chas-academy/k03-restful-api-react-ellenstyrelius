@@ -24,7 +24,7 @@ const rotateAndChangeColor = keyframes`
 `;
 
 const AnimatedLoader = styled(Splash)`
-  height: calc(2 * ${size.large});
+  height: calc(2 * ${size.large}px);
   margin-top: 240px;
   animation: ${rotateAndChangeColor} 4s linear infinite;
 `;

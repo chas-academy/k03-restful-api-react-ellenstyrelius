@@ -1,8 +1,8 @@
 const size = {
-  min: '4px',
-  small: '8px',
-  medium: '16px',
-  large: '32px'
+  min: 4,
+  small: 8,
+  medium: 16,
+  large: 32
 };
 
 export default size;
