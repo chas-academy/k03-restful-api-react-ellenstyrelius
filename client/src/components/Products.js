@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import apiUrl from '../utils/apiUrl';
 import Loader from './Loader';
 import Error from './Error';
+import MenuSubCategories from './MenuSubCategories';
 import { ReactComponent as Splash } from '../utils/img/splash.svg';
 import Page from '../utils/styling/Page';
 import ProductContainer from '../utils/styling/ProductContainer';
@@ -22,13 +23,14 @@ function Products() {
   const [hasError, setHasError] = useState(false);
   const [productsData, setProductsData] = useState(null);
 
+  const urlArr = window.location.href.split('/');
+  const fetchParamCategory = urlArr[urlArr.length - 1];
+
   const fetchProducts = () => {
-    const urlArr = window.location.href.split('/');
-    const fetchParam = urlArr[urlArr.length - 1];
     let fetchUrl;
-    fetchParam === 'all-tints'
+    fetchParamCategory === 'all-tints'
       ? (fetchUrl = `${apiUrl}/products`)
-      : (fetchUrl = `${apiUrl}/products/categories/${fetchParam}`);
+      : (fetchUrl = `${apiUrl}/products/categories/${fetchParamCategory}`);
 
     fetch(fetchUrl)
       .then(res => res.json())
@@ -54,7 +56,12 @@ function Products() {
       {hasError && <Error />}
       {!isLoading && !hasError && productsData && (
         <>
-          <Header>all tints</Header>
+          <Header>
+            {fetchParamCategory === 'all-tints'
+              ? fetchParamCategory.replace('-', ' tingling ')
+              : `${fetchParamCategory} tints`}
+          </Header>
+          <MenuSubCategories {...{ fetchParamCategory }} />
           <Container>
             {productsData.map((product, index) => {
               const { hexCode, name, category } = product;
