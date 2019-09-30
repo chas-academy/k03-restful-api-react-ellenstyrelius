@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
 
-import { subCategories } from '../utils/tintsCategories';
+import { subcategories } from '../utils/tintsCategories';
 import color from '../utils/styling/color';
 import size from '../utils/styling/size';
 import fontSize from '../utils/styling/fontSize';
@@ -33,23 +33,24 @@ const MenuItem = styled.li`
   }
 `;
 
-function MenuSubCategories({ fetchParamCategory: category }) {
+function SubMenu() {
+  const category = window.location.href.split('products/')[1].split('/')[0];
   const basePath = `/products/${category}`;
-  const specificSubCategories = subCategories.filter(item =>
+  const specificSubcategories = subcategories.filter(item =>
     item.split('-')[1].includes(category)
   );
 
   return (
     <Container>
-      {specificSubCategories.map((item, index) => {
-        const subCategoryPath = `${basePath}/${item}`;
+      {specificSubcategories.map((subcategory, index) => {
+        const subcategoryPath = `${basePath}/${subcategory}`;
         const activeLinkStyle = {
           textDecoration: `underline solid ${offBlack}`
         };
         return (
           <MenuItem key={index}>
-            <NavLink to={subCategoryPath} activeStyle={activeLinkStyle}>
-              {item.replace('-', ' ')}
+            <NavLink to={subcategoryPath} activeStyle={activeLinkStyle}>
+              {subcategory.replace('-', ' ')}
             </NavLink>
           </MenuItem>
         );
@@ -58,4 +59,4 @@ function MenuSubCategories({ fetchParamCategory: category }) {
   );
 }
 
-export default MenuSubCategories;
+export default SubMenu;
